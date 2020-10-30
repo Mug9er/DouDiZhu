@@ -1,0 +1,2 @@
+rootProject.name='连接服务器test3'
+include ':app'
