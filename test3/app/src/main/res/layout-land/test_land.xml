@@ -1,9 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".MainActivity"
     tools:ignore="MissingDefaultResource">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/client1"
+        android:text="客户端1"
+        tools:ignore="MissingConstraints" />
+
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="270dp"
+        android:layout_height="56dp"
+        android:hint="输入要传输的数据"
+        android:text="中文"
+        android:layout_below="@id/client1"
+        />
+
+    <Button
+        android:id="@+id/send_link1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="发送连接1"
+        android:layout_below="@id/editText1"
+        />
+
+    <Button
+        android:id="@+id/send_message1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="发送信息1"
+        android:layout_toRightOf="@id/send_link1"
+        android:layout_alignTop="@id/send_link1"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/client2"
+        android:text="客户端2"
+        android:layout_below="@id/send_link1"
+        tools:ignore="MissingConstraints" />
+
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="270dp"
+        android:layout_height="56dp"
+        android:hint="输入要传输的数据"
+        android:text="中文"
+        android:layout_below="@id/client2"
+        />
+
+    <Button
+        android:id="@+id/send_link2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="发送连接2"
+        android:layout_below="@id/editText2"
+        />
+
+    <Button
+        android:id="@+id/send_message2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="发送信息2"
+        android:layout_toRightOf="@id/send_link2"
+        android:layout_alignTop="@id/send_link2"
+        />
+</RelativeLayout>
