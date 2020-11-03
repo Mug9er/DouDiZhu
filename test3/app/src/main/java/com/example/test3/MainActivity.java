@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.test_land);
+        setContentView(R.layout.activity_main);
 
         send_link1 = findViewById(R.id.send_link1);
         editText1 = findViewById(R.id.editText1);

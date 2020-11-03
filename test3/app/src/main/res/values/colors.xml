@@ -3,4 +3,9 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="black">#000000</color>
+    <color name="cornflowerblue">#6495ed</color>
+    <color name="fontColor">#879B61</color>
+    <color name="gray">#808080</color>
+    <color name="gold">#ffd700</color>
 </resources>
