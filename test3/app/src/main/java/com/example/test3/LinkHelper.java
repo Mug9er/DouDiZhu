@@ -8,4 +8,5 @@ public class LinkHelper {
     public static native String sendTest1(String content);
     public static native String linkTest2();
     public static native String sendTest2(String content);
+    public static native String close();
 }

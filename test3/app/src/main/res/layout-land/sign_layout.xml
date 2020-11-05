@@ -9,24 +9,49 @@
 
 
     <TextView
-        android:id="@+id/user_name"
+        android:id="@+id/user_name_textview"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="昵称"
         android:layout_marginTop="125dp"
-        android:layout_marginLeft="200dp"
+        android:layout_marginLeft="210dp"
         android:textSize="45dp"
         android:textColor="@color/gold"
         />
 
     <EditText
+        android:id="@+id/user_name_edittext"
         android:layout_width="300dp"
         android:layout_height="70dp"
-        android:layout_below="@+id/user_name"
-        android:layout_alignLeft="@+id/user_name"
+        android:layout_below="@+id/user_name_textview"
+        android:layout_alignLeft="@+id/user_name_textview"
         android:background="@drawable/edit_background"
-
+        android:textSize="40dp"
+        android:cursorVisible="false"
         />
+
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/login_button"
+            android:layout_below="@+id/user_name_edittext"
+            android:layout_marginTop="80dp"
+            android:layout_toLeftOf="@+id/user_name_edittext"
+            android:textSize="40dp"
+            android:text="确定"
+            />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/cancel_button"
+        android:layout_below="@+id/user_name_edittext"
+        android:layout_marginTop="80dp"
+        android:layout_toRightOf="@+id/user_name_edittext"
+        android:textSize="40dp"
+        android:text="取消"
+        />
+
 
 </RelativeLayout>

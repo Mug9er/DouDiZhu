@@ -22,7 +22,7 @@ Java_com_example_test3_LinkHelper_linkTest1(JNIEnv *env, jclass clazz) {
     }
     LOGI("connect successful");
 
-    return env->NewStringUTF(buf1);
+    return env->NewStringUTF("连接成功");
 }
 
 extern "C"
@@ -85,4 +85,14 @@ Java_com_example_test3_LinkHelper_sendTest2(JNIEnv *env, jclass clazz, jstring c
     read(clientfd2, buf2, sizeof(buf2));
 
     return env->NewStringUTF(buf2);
+}
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_com_example_test3_LinkHelper_close(JNIEnv *env, jclass clazz) {
+    // TODO: implement close()
+    int ret = close(clientfd1);
+    if(ret < 0) {
+        return env->NewStringUTF("关闭失败");
+    }
+    return env->NewStringUTF("关闭成功");
 }
