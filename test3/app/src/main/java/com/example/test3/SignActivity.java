@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,7 +23,9 @@ import java.util.List;
 
 public class SignActivity extends AppCompatActivity{
 
+    public SignActivity inst = null;
     Button login_button, cancel_button;
+    EditText user_name;
     Handler handler;
     Context context;
 
@@ -32,20 +35,19 @@ public class SignActivity extends AppCompatActivity{
         getSupportActionBar().hide();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.sign_layout);
-
         init();
-
-
-
     }
 
     void init() {
+        inst = this;
         login_button = findViewById(R.id.login_button);
         cancel_button = findViewById(R.id.cancel_button);
+        user_name = findViewById(R.id.user_name_edittext);
         context = this;
         setHandler();
         login();
 
+        receive_thread();
         cancel_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +68,28 @@ public class SignActivity extends AppCompatActivity{
             }
         });
 
+        login_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String name = user_name.getText().toString();
+                        String ret = LinkHelper.sendName(name);
+                        Message message = new Message();
+                        String[] ret_list = ret.split("\n");
+
+                        if(ret_list.length == 2 && ret_list[0].equals("NAME")) {
+                            message.what = Date.SEND_NAME_SUCCESS;
+                        }else {
+                            message.what = Date.SEND_NAME_FAILED;
+                        }
+                        message.obj = ret;
+                        handler.sendMessage(message);
+                    }
+                }).start();
+            }
+        });
     }
 
     @SuppressLint("HandlerLeak")
@@ -79,18 +103,28 @@ public class SignActivity extends AppCompatActivity{
                 //获得刚才发送的Message对象，然后在这里进行UI操作
                 switch (msg.what) {
                     case Date.CONNECT_SUCCESS:
-                    case Date.CONNECT_FAILED:
                         Toast.makeText(getApplicationContext(), msg.obj.toString(), Toast.LENGTH_SHORT).show();
+                        break;
+                    case Date.CONNECT_FAILED:
+                    case Date.SEND_NAME_FAILED:
+                    case Date.RECEIVE_SUCCESS:
+                    case Date.RECEIVE_FAILED:
                         break;
                     case Date.CANCEL_SUCCESS:
                     case Date.CANCEL_FAILED:
                         Toast.makeText(getApplicationContext(), msg.obj.toString(), Toast.LENGTH_SHORT).show();
                         exitAPP();
                         break;
+                    case Date.SEND_NAME_SUCCESS:
+                        Log.e("send_name_success", "ss");
+                        Intent intent = new Intent(inst, MainActivity.class);
+                        startActivity(intent);
+                        inst.finish();
                 }
             }
         };
     }
+
 
     void login() {
         new Thread(new Runnable() {
@@ -105,6 +139,27 @@ public class SignActivity extends AppCompatActivity{
                 }
                 message.obj = ret;
                 handler.sendMessage(message);
+            }
+        }).start();
+    }
+
+    void receive_thread() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+                    String ret = LinkHelper.receive();
+                    Log.e("receive", ret);
+                    Message message = new Message();
+                    String[] ret_list = ret.split("\n");
+                    if(ret_list.length == 2 && ret_list[0].equals("MESSAGE")) {
+                        message.what = Date.RECEIVE_SUCCESS;
+                    }else {
+                        message.what = Date.RECEIVE_FAILED;
+                    }
+                    message.obj = ret;
+                    handler.sendMessage(message);
+                }
             }
         }).start();
     }

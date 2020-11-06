@@ -9,4 +9,6 @@ public class LinkHelper {
     public static native String linkTest2();
     public static native String sendTest2(String content);
     public static native String close();
+    public static native String sendName(String name);
+    public static native String receive();
 }

@@ -38,7 +38,7 @@ Java_com_example_test3_LinkHelper_sendTest1(JNIEnv *env, jclass clazz, jstring c
 
     bzero(buf1, 1024);
 
-    read(clientfd1, buf1, sizeof(buf1));
+   // read(clientfd1, buf1, sizeof(buf1));
     return env->NewStringUTF(buf1);
 }
 extern "C"
@@ -95,4 +95,32 @@ Java_com_example_test3_LinkHelper_close(JNIEnv *env, jclass clazz) {
         return env->NewStringUTF("关闭失败");
     }
     return env->NewStringUTF("关闭成功");
+}
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_com_example_test3_LinkHelper_sendName(JNIEnv *env, jclass clazz, jstring name) {
+    char * tmp = (char*) env->GetStringUTFChars(name, JNI_FALSE);
+
+    sprintf(buf1, "NAME\n%s", tmp);
+
+    env->ReleaseStringUTFChars(name, tmp);
+
+    int ret = write(clientfd1, buf1, sizeof(buf1));
+
+    if(ret < 0) {
+        return env->NewStringUTF("send error");
+    }
+    return env->NewStringUTF(buf1);
+}extern "C"
+JNIEXPORT jstring JNICALL
+Java_com_example_test3_LinkHelper_receive(JNIEnv *env, jclass clazz) {
+    int ret = read(clientfd1, buf1, sizeof(buf1));
+
+    sprintf(buf2, "MESSAGE##%s", buf1);
+    sprintf(buf1, "%s", buf2);
+
+    if(ret < 0) {
+        return env->NewStringUTF("receive error");
+    }
+    return env->NewStringUTF(buf1);
 }
