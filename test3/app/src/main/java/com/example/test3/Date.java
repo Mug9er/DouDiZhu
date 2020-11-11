@@ -1,6 +1,13 @@
 package com.example.test3;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
+import android.content.Intent;
+import android.os.Message;
+import android.util.Log;
+import android.widget.Toast;
+
+import java.util.logging.Handler;
 
 public class Date extends Application {
     public static final int CONNECT_SUCCESS = 1; // 连接成功
@@ -19,4 +26,15 @@ public class Date extends Application {
 
     public static final int SEND_NAME_FAILED = 8; // 发送NAME失败
 
+    private mHandler mhandler = null;
+
+    public void setMHandler(mHandler handler) {
+        mhandler = handler;
+    }
+
+    public mHandler getMHandler() {
+        return mhandler;
+    }
+
 }
+

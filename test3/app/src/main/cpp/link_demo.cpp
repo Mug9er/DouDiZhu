@@ -114,6 +114,7 @@ Java_com_example_test3_LinkHelper_sendName(JNIEnv *env, jclass clazz, jstring na
 }extern "C"
 JNIEXPORT jstring JNICALL
 Java_com_example_test3_LinkHelper_receive(JNIEnv *env, jclass clazz) {
+    bzero(buf1, 0);
     int ret = read(clientfd1, buf1, sizeof(buf1));
 
     sprintf(buf2, "MESSAGE##%s", buf1);

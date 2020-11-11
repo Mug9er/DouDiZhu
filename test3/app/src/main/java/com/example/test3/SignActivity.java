@@ -26,7 +26,8 @@ public class SignActivity extends AppCompatActivity{
     public SignActivity inst = null;
     Button login_button, cancel_button;
     EditText user_name;
-    Handler handler;
+    mHandler handler = null;
+    Date mDate = null;
     Context context;
 
     @Override
@@ -40,11 +41,14 @@ public class SignActivity extends AppCompatActivity{
 
     void init() {
         inst = this;
+        mDate = (Date)getApplication();
+        handler = new mHandler();
+        mDate.setMHandler(handler);
         login_button = findViewById(R.id.login_button);
         cancel_button = findViewById(R.id.cancel_button);
         user_name = findViewById(R.id.user_name_edittext);
         context = this;
-        setHandler();
+        //setHandler();
         login();
 
         receive_thread();
@@ -92,7 +96,7 @@ public class SignActivity extends AppCompatActivity{
         });
     }
 
-    @SuppressLint("HandlerLeak")
+   /* @SuppressLint("HandlerLeak")
     void setHandler() {
 
         handler = new Handler(){
@@ -123,7 +127,7 @@ public class SignActivity extends AppCompatActivity{
                 }
             }
         };
-    }
+    }*/
 
 
     void login() {
@@ -137,6 +141,10 @@ public class SignActivity extends AppCompatActivity{
                 }else {
                     message.what = Date.CONNECT_FAILED;
                 }
+                Bundle bundle = new Bundle();
+                bundle.putString("NAME", "sss");
+                bundle.putString("AGE", "sttt");
+                message.setData(bundle);
                 message.obj = ret;
                 handler.sendMessage(message);
             }
@@ -151,12 +159,15 @@ public class SignActivity extends AppCompatActivity{
                     String ret = LinkHelper.receive();
                     Log.e("receive", ret);
                     Message message = new Message();
-                    String[] ret_list = ret.split("\n");
+                    String[] ret_list = ret.split("##");
                     if(ret_list.length == 2 && ret_list[0].equals("MESSAGE")) {
                         message.what = Date.RECEIVE_SUCCESS;
                     }else {
                         message.what = Date.RECEIVE_FAILED;
                     }
+                    Bundle bundle = new Bundle();
+                    bundle.putString("NAME", "sss");
+                    bundle.putString("AGE", "sttt");
                     message.obj = ret;
                     handler.sendMessage(message);
                 }
