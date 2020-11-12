@@ -101,7 +101,7 @@ JNIEXPORT jstring JNICALL
 Java_com_example_test3_LinkHelper_sendName(JNIEnv *env, jclass clazz, jstring name) {
     char * tmp = (char*) env->GetStringUTFChars(name, JNI_FALSE);
 
-    sprintf(buf1, "NAME\n%s", tmp);
+    sprintf(buf1, "NAME##%s", tmp);
 
     env->ReleaseStringUTFChars(name, tmp);
 

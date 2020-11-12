@@ -3,8 +3,10 @@ package com.example.test3;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,8 +28,10 @@ public class SignActivity extends AppCompatActivity{
     public SignActivity inst = null;
     Button login_button, cancel_button;
     EditText user_name;
-    mHandler handler = null;
+    Date.mHandler handler = null;
     Date mDate = null;
+    IntentFilter filter = null;
+    MyReceiver receiver = null;
     Context context;
 
     @Override
@@ -40,9 +44,15 @@ public class SignActivity extends AppCompatActivity{
     }
 
     void init() {
+        receiver = new MyReceiver();
+        filter = new IntentFilter();
+        filter.addAction("android.intent.action.test");
+        registerReceiver(receiver, filter);
+        Log.e("register", "注册");
+
         inst = this;
         mDate = (Date)getApplication();
-        handler = new mHandler();
+        handler = mDate. new mHandler();
         mDate.setMHandler(handler);
         login_button = findViewById(R.id.login_button);
         cancel_button = findViewById(R.id.cancel_button);
@@ -51,7 +61,6 @@ public class SignActivity extends AppCompatActivity{
         //setHandler();
         login();
 
-        receive_thread();
         cancel_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,7 +90,7 @@ public class SignActivity extends AppCompatActivity{
                         String name = user_name.getText().toString();
                         String ret = LinkHelper.sendName(name);
                         Message message = new Message();
-                        String[] ret_list = ret.split("\n");
+                        String[] ret_list = ret.split("##");
 
                         if(ret_list.length == 2 && ret_list[0].equals("NAME")) {
                             message.what = Date.SEND_NAME_SUCCESS;
@@ -96,40 +105,6 @@ public class SignActivity extends AppCompatActivity{
         });
     }
 
-   /* @SuppressLint("HandlerLeak")
-    void setHandler() {
-
-        handler = new Handler(){
-            @SuppressLint("ShowToast")
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                //获得刚才发送的Message对象，然后在这里进行UI操作
-                switch (msg.what) {
-                    case Date.CONNECT_SUCCESS:
-                        Toast.makeText(getApplicationContext(), msg.obj.toString(), Toast.LENGTH_SHORT).show();
-                        break;
-                    case Date.CONNECT_FAILED:
-                    case Date.SEND_NAME_FAILED:
-                    case Date.RECEIVE_SUCCESS:
-                    case Date.RECEIVE_FAILED:
-                        break;
-                    case Date.CANCEL_SUCCESS:
-                    case Date.CANCEL_FAILED:
-                        Toast.makeText(getApplicationContext(), msg.obj.toString(), Toast.LENGTH_SHORT).show();
-                        exitAPP();
-                        break;
-                    case Date.SEND_NAME_SUCCESS:
-                        Log.e("send_name_success", "ss");
-                        Intent intent = new Intent(inst, MainActivity.class);
-                        startActivity(intent);
-                        inst.finish();
-                }
-            }
-        };
-    }*/
-
-
     void login() {
         new Thread(new Runnable() {
             @Override
@@ -137,14 +112,11 @@ public class SignActivity extends AppCompatActivity{
                 String ret = LinkHelper.linkTest1();
                 Message message = new Message();
                 if(ret.equals("连接失败")) {
-                    message.what = Date.CONNECT_SUCCESS;
-                }else {
                     message.what = Date.CONNECT_FAILED;
+                }else {
+                    message.what = Date.CONNECT_SUCCESS;
                 }
-                Bundle bundle = new Bundle();
-                bundle.putString("NAME", "sss");
-                bundle.putString("AGE", "sttt");
-                message.setData(bundle);
+                Log.e("SignActivity.login()", "连接成功");
                 message.obj = ret;
                 handler.sendMessage(message);
             }
@@ -165,9 +137,6 @@ public class SignActivity extends AppCompatActivity{
                     }else {
                         message.what = Date.RECEIVE_FAILED;
                     }
-                    Bundle bundle = new Bundle();
-                    bundle.putString("NAME", "sss");
-                    bundle.putString("AGE", "sttt");
                     message.obj = ret;
                     handler.sendMessage(message);
                 }
@@ -177,13 +146,22 @@ public class SignActivity extends AppCompatActivity{
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void exitAPP() {
-
         ActivityManager activityManager = (ActivityManager) context.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.AppTask> appTaskList = activityManager.getAppTasks();
         for (ActivityManager.AppTask appTask : appTaskList) {
             appTask.finishAndRemoveTask();
         }
     }
+
+    public class MyReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.e("Re", "jieshou");
+            receive_thread();
+        }
+    }
+
 
 
 }

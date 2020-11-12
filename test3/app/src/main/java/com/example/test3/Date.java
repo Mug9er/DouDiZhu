@@ -3,13 +3,15 @@ package com.example.test3;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.util.logging.Handler;
-
 public class Date extends Application {
+
+    public String  name = null;
+
     public static final int CONNECT_SUCCESS = 1; // 连接成功
 
     public static final int CONNECT_FAILED = 2; //连接失败
@@ -28,6 +30,8 @@ public class Date extends Application {
 
     private mHandler mhandler = null;
 
+    private LinkHelper linkHelper = new LinkHelper();
+
     public void setMHandler(mHandler handler) {
         mhandler = handler;
     }
@@ -35,6 +39,44 @@ public class Date extends Application {
     public mHandler getMHandler() {
         return mhandler;
     }
+
+
+    public class mHandler extends Handler {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Intent intent = null;
+            switch (msg.what) {
+                case Date.CONNECT_SUCCESS:
+                    Log.e("SignActivity.mHander.connect_success", msg.obj.toString());
+                    intent = new Intent();
+                    intent.setAction("android.intent.action.test");
+                    sendBroadcast(intent);
+                    break;
+                case Date.CONNECT_FAILED:
+                case Date.SEND_NAME_FAILED:
+                case Date.RECEIVE_SUCCESS:
+                    Log.e("SignActivity.mHander.receiver_success", msg.obj.toString());
+
+
+                case Date.RECEIVE_FAILED:
+                    break;
+                case Date.CANCEL_SUCCESS:
+                case Date.CANCEL_FAILED:
+                    Log.e("SignActivity.mHander.cancel_failed", msg.obj.toString());
+                    break;
+                case Date.SEND_NAME_SUCCESS:
+                    Log.e("SignActivity.mHander.send_name_success", "ss");
+                    intent = new Intent();
+                    intent.setAction("android.intent.action.MainActivity");
+                    sendBroadcast(intent);
+                    break;
+            }
+        }
+
+    }
+
 
 }
 

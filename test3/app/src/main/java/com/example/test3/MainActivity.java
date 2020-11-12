@@ -2,6 +2,10 @@ package com.example.test3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,10 +22,21 @@ public class MainActivity extends AppCompatActivity {
     }
     public EditText editText1, editText2;
     Button send_link1, send_message1, send_link2, send_message2;
+    MyReceiver receiver = null;
+    IntentFilter filter = null;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        receiver = new MyReceiver();
+        filter = new IntentFilter();
+        filter.addAction("android.intent.action.MainActivity");
+        registerReceiver(receiver, filter);
+        Log.e("MainActivity.register", "注册");
 
         send_link1 = findViewById(R.id.send_link1);
         editText1 = findViewById(R.id.editText1);
@@ -80,6 +95,14 @@ public class MainActivity extends AppCompatActivity {
                 }).start();
             }
         });
+    }
+
+    public class MyReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.e("MainActivity", "jieshou");
+        }
     }
 
 }
