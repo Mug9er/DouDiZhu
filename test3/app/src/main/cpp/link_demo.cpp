@@ -2,7 +2,7 @@
 
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_example_test3_LinkHelper_linkTest1(JNIEnv *env, jclass clazz) {
+Java_com_example_test3_LinkHelper_linkTest1(JNIEnv *env, jobject clazz) {
     socklen_t serv_addr_len;
 
     clientfd1 = socket(AF_INET, SOCK_STREAM, 0);
@@ -27,7 +27,7 @@ Java_com_example_test3_LinkHelper_linkTest1(JNIEnv *env, jclass clazz) {
 
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_example_test3_LinkHelper_sendTest1(JNIEnv *env, jclass clazz, jstring content) {
+Java_com_example_test3_LinkHelper_sendTest1(JNIEnv *env, jobject clazz, jstring content) {
     char * tmp = (char*) env->GetStringUTFChars(content, JNI_FALSE);
 
     strcpy(buf1, tmp);
@@ -43,7 +43,7 @@ Java_com_example_test3_LinkHelper_sendTest1(JNIEnv *env, jclass clazz, jstring c
 }
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_example_test3_LinkHelper_linkTest2(JNIEnv *env, jclass clazz) {
+Java_com_example_test3_LinkHelper_linkTest2(JNIEnv *env, jobject clazz) {
     socklen_t serv_addr_len;
 
     clientfd2 = socket(AF_INET, SOCK_STREAM, 0);
@@ -67,7 +67,7 @@ Java_com_example_test3_LinkHelper_linkTest2(JNIEnv *env, jclass clazz) {
 }
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_example_test3_LinkHelper_sendTest2(JNIEnv *env, jclass clazz, jstring content) {
+Java_com_example_test3_LinkHelper_sendTest2(JNIEnv *env, jobject clazz, jstring content) {
     char * tmp = (char*) env->GetStringUTFChars(content, JNI_FALSE);
 
     strcpy(buf2, tmp);
@@ -88,7 +88,7 @@ Java_com_example_test3_LinkHelper_sendTest2(JNIEnv *env, jclass clazz, jstring c
 }
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_example_test3_LinkHelper_close(JNIEnv *env, jclass clazz) {
+Java_com_example_test3_LinkHelper_close(JNIEnv *env, jobject clazz) {
     // TODO: implement close()
     int ret = close(clientfd1);
     if(ret < 0) {
@@ -98,7 +98,7 @@ Java_com_example_test3_LinkHelper_close(JNIEnv *env, jclass clazz) {
 }
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_example_test3_LinkHelper_sendName(JNIEnv *env, jclass clazz, jstring name) {
+Java_com_example_test3_LinkHelper_sendName(JNIEnv *env, jobject clazz, jstring name) {
     char * tmp = (char*) env->GetStringUTFChars(name, JNI_FALSE);
 
     sprintf(buf1, "NAME##%s", tmp);
@@ -113,7 +113,7 @@ Java_com_example_test3_LinkHelper_sendName(JNIEnv *env, jclass clazz, jstring na
     return env->NewStringUTF(buf1);
 }extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_example_test3_LinkHelper_receive(JNIEnv *env, jclass clazz) {
+Java_com_example_test3_LinkHelper_receive(JNIEnv *env, jobject clazz) {
     bzero(buf1, 0);
     int ret = read(clientfd1, buf1, sizeof(buf1));
 

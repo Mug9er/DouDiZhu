@@ -37,20 +37,19 @@
             android:id="@+id/login_button"
             android:layout_below="@+id/user_name_edittext"
             android:layout_marginTop="80dp"
-            android:layout_toLeftOf="@+id/user_name_edittext"
+            android:layout_toRightOf="@+id/user_name_edittext"
             android:textSize="40dp"
             android:text="确定"
             />
 
     <Button
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/cancel_button"
-        android:layout_below="@+id/user_name_edittext"
-        android:layout_marginTop="80dp"
-        android:layout_toRightOf="@+id/user_name_edittext"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
         android:textSize="40dp"
-        android:text="取消"
+        android:text="返回"
         />
 
 

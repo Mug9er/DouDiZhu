@@ -4,11 +4,11 @@ public class LinkHelper {
     static {
         System.loadLibrary("native-lib");
     }
-    public static native String linkTest1();
-    public static native String sendTest1(String content);
-    public static native String linkTest2();
-    public static native String sendTest2(String content);
-    public static native String close();
-    public static native String sendName(String name);
-    public static native String receive();
+    public native String linkTest1();
+    public native String sendTest1(String content);
+    public native String linkTest2();
+    public native String sendTest2(String content);
+    public native String close();
+    public native String sendName(String name);
+    public native String receive();
 }

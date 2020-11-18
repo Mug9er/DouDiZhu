@@ -10,6 +10,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,16 +22,30 @@ public class MainActivity extends AppCompatActivity {
         System.loadLibrary("native-lib");
     }
     public EditText editText1, editText2;
+    TextView user_name;
     Button send_link1, send_message1, send_link2, send_message2;
     MyReceiver receiver = null;
     IntentFilter filter = null;
+    LinkHelper mLinkHelper = null;
+    Date mDate = null;
+    Date.mHandler mHandler = null;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+        init();
+        setOnClicked();
 
+    }
+
+    void init() {
+        mDate = (Date)getApplication();
+        mHandler = mDate.getMHandler();
+        mLinkHelper = mDate.getLinkHelper();
 
         receiver = new MyReceiver();
         filter = new IntentFilter();
@@ -44,14 +59,20 @@ public class MainActivity extends AppCompatActivity {
         send_link2 = findViewById(R.id.send_link2);
         editText2 = findViewById(R.id.editText2);
         send_message2 = findViewById(R.id.send_message2);
+        user_name = findViewById(R.id.user_name);
 
+        user_name.setText(mDate.name);
+
+    }
+
+    void setOnClicked() {
         send_link1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        String ret = LinkHelper.linkTest1();
+                        String ret = mLinkHelper.linkTest1();
                         Log.d("s", ret);
                     }
                 }).start();
@@ -64,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         String content = editText1.getText().toString();
-                        String ret = LinkHelper.sendTest1(content);
+                        String ret = mLinkHelper.sendTest1(content);
                         Log.d("s", ret);
                     }
                 }).start();
@@ -76,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        String ret = LinkHelper.linkTest2();
+                        String ret = mLinkHelper.linkTest2();
                         Log.d("s", ret);
                     }
                 }).start();
@@ -89,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         String content = editText2.getText().toString();
-                        String ret = LinkHelper.sendTest2(content);
+                        String ret = mLinkHelper.sendTest2(content);
                         Log.d("s", ret);
                     }
                 }).start();

@@ -30,7 +30,7 @@ public class Date extends Application {
 
     private mHandler mhandler = null;
 
-    private LinkHelper linkHelper = new LinkHelper();
+    private LinkHelper mLinkHelper = null;
 
     public void setMHandler(mHandler handler) {
         mhandler = handler;
@@ -38,6 +38,14 @@ public class Date extends Application {
 
     public mHandler getMHandler() {
         return mhandler;
+    }
+
+    public void setLinkHelper(LinkHelper linkHelper) {
+        mLinkHelper = linkHelper;
+    }
+
+    public LinkHelper getLinkHelper() {
+        return mLinkHelper;
     }
 
 
@@ -52,13 +60,22 @@ public class Date extends Application {
                     Log.e("SignActivity.mHander.connect_success", msg.obj.toString());
                     intent = new Intent();
                     intent.setAction("android.intent.action.test");
+                    intent.putExtra("VALUE", Date.CONNECT_SUCCESS);
                     sendBroadcast(intent);
                     break;
                 case Date.CONNECT_FAILED:
+                    intent = new Intent();
+                    intent.setAction("android.intent.action.test");
+                    intent.putExtra("VALUE", Date.CONNECT_FAILED);
+                    sendBroadcast(intent);
+                    break;
                 case Date.SEND_NAME_FAILED:
+                    intent = new Intent();
+                    intent.setAction("android.intent.action.test");
+                    intent.putExtra("VALUE", Date.SEND_NAME_FAILED);
+                    sendBroadcast(intent);
                 case Date.RECEIVE_SUCCESS:
                     Log.e("SignActivity.mHander.receiver_success", msg.obj.toString());
-
 
                 case Date.RECEIVE_FAILED:
                     break;
@@ -68,8 +85,10 @@ public class Date extends Application {
                     break;
                 case Date.SEND_NAME_SUCCESS:
                     Log.e("SignActivity.mHander.send_name_success", "ss");
+
                     intent = new Intent();
-                    intent.setAction("android.intent.action.MainActivity");
+                    intent.setAction("android.intent.action.test");
+                    intent.putExtra("VALUE", Date.SEND_NAME_SUCCESS);
                     sendBroadcast(intent);
                     break;
             }

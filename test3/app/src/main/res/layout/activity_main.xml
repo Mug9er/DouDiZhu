@@ -7,10 +7,18 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/user_name"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:textSize="40dp"
+        />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/client1"
         android:text="客户端1"
+        android:layout_below="@id/user_name"
         tools:ignore="MissingConstraints" />
 
 

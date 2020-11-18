@@ -29,6 +29,7 @@ public class SignActivity extends AppCompatActivity{
     Button login_button, cancel_button;
     EditText user_name;
     Date.mHandler handler = null;
+    LinkHelper linkHelper = null;
     Date mDate = null;
     IntentFilter filter = null;
     MyReceiver receiver = null;
@@ -43,6 +44,12 @@ public class SignActivity extends AppCompatActivity{
         init();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
+    }
+
     void init() {
         receiver = new MyReceiver();
         filter = new IntentFilter();
@@ -53,12 +60,13 @@ public class SignActivity extends AppCompatActivity{
         inst = this;
         mDate = (Date)getApplication();
         handler = mDate. new mHandler();
+        linkHelper = new LinkHelper();
+        mDate.setLinkHelper(linkHelper);
         mDate.setMHandler(handler);
         login_button = findViewById(R.id.login_button);
         cancel_button = findViewById(R.id.cancel_button);
         user_name = findViewById(R.id.user_name_edittext);
         context = this;
-        //setHandler();
         login();
 
         cancel_button.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +75,7 @@ public class SignActivity extends AppCompatActivity{
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        String ret = LinkHelper.close();
+                        String ret = linkHelper.close();
                         Message message = new Message();
                         if(ret.equals("关闭成功")) {
                             message.what = Date.CANCEL_SUCCESS;
@@ -88,12 +96,13 @@ public class SignActivity extends AppCompatActivity{
                     @Override
                     public void run() {
                         String name = user_name.getText().toString();
-                        String ret = LinkHelper.sendName(name);
+                        String ret = linkHelper.sendName(name);
                         Message message = new Message();
                         String[] ret_list = ret.split("##");
 
                         if(ret_list.length == 2 && ret_list[0].equals("NAME")) {
                             message.what = Date.SEND_NAME_SUCCESS;
+                            mDate.name = name;
                         }else {
                             message.what = Date.SEND_NAME_FAILED;
                         }
@@ -109,7 +118,7 @@ public class SignActivity extends AppCompatActivity{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String ret = LinkHelper.linkTest1();
+                String ret = linkHelper.linkTest1();
                 Message message = new Message();
                 if(ret.equals("连接失败")) {
                     message.what = Date.CONNECT_FAILED;
@@ -128,7 +137,7 @@ public class SignActivity extends AppCompatActivity{
             @Override
             public void run() {
                 while(true) {
-                    String ret = LinkHelper.receive();
+                    String ret = linkHelper.receive();
                     Log.e("receive", ret);
                     Message message = new Message();
                     String[] ret_list = ret.split("##");
@@ -157,9 +166,31 @@ public class SignActivity extends AppCompatActivity{
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e("Re", "jieshou");
-            receive_thread();
+            int value = intent.getIntExtra("VALUE", 0);
+            Log.e("value", ""+value);
+            switch (value) {
+                case Date.CONNECT_SUCCESS:
+                    Log.e("SignActivity.MyReceiver.onReceive", "Connect_Success");
+                    Toast.makeText(getApplicationContext(), "Connect_Success", Toast.LENGTH_SHORT).show();
+                    receive_thread();
+                    break;
+                case Date.CONNECT_FAILED:
+                    Log.e("SignActivity.MyReceiver.onReceive", "Connect_failed");
+                    Toast.makeText(getApplicationContext(), "Connect_Failed", Toast.LENGTH_SHORT).show();
+                    break;
+                case Date.SEND_NAME_SUCCESS:
+                    Toast.makeText(getApplicationContext(), "注册成功", Toast.LENGTH_SHORT).show();
+                    intent = new Intent();
+                    intent.setClass(inst, MainActivity.class);
+                    startActivity(intent);
+                    inst.finish();
+                    break;
+                case Date.SEND_NAME_FAILED:
+                    Toast.makeText(getApplicationContext(), "名字已存在", Toast.LENGTH_SHORT).show();
+
+            }
         }
+
     }
 
 
