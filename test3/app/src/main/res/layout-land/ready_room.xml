@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    tools:ignore="MissingDefaultResource">
+
+    <LinearLayout
+        android:id="@+id/room_master"
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:text="房主"
+            android:gravity="center"
+            android:textSize="50dp"
+
+            />
+        <TextView
+            android:id="@+id/room_master_id"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textSize="50dp"
+
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/play1"
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:layout_below="@id/room_master">
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:text="玩家1"
+            android:textSize="50dp"
+            android:gravity="center"
+
+            />
+        <TextView
+            android:id="@+id/play1_id"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:textSize="50dp"
+            android:gravity="center"
+
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/play2"
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:layout_below="@id/play1">
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:text="玩家2"
+            android:textSize="50dp"
+            android:gravity="center"
+
+            />
+        <TextView
+            android:id="@+id/play2_id"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:textSize="50dp"
+            android:gravity="center"
+
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/ready_room_id"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_toRightOf="@id/room_master"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="200dp"
+        android:textSize="40dp"
+        />
+
+    <Button
+        android:id="@+id/room_master_play"
+        android:layout_width="160dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/play2"
+        android:layout_alignLeft="@id/ready_room_id"
+        />
+    <Button
+        android:id="@+id/player_ready"
+        android:layout_width="160dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/play2"
+        android:layout_alignLeft="@id/ready_room_id"
+        />
+
+
+</RelativeLayout>

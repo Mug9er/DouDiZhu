@@ -26,6 +26,10 @@
             android:screenOrientation="landscape">
 
         </activity>
+        <activity android:name=".CreateRoomActivity"
+        android:screenOrientation="landscape">
+
+    </activity>
     </application>
 
 </manifest>

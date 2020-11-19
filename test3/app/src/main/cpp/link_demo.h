@@ -18,7 +18,10 @@
 #define SERV_PORT 6666
 
 char buf1[1024], buf2[1024];
-int clientfd1, clientfd2;
-struct sockaddr_in serv_addr1, serv_addr2;
+int clientfd;
+struct sockaddr_in serv_addr;
+
+// clientfd 客户端fd，与服务器通信用这个
+//
 
 #endif //连接服务器TEST3_LINK_DEMO_H

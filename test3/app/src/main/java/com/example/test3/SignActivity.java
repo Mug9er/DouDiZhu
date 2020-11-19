@@ -118,7 +118,7 @@ public class SignActivity extends AppCompatActivity{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String ret = linkHelper.linkTest1();
+                String ret = linkHelper.linkTest();
                 Message message = new Message();
                 if(ret.equals("连接失败")) {
                     message.what = Date.CONNECT_FAILED;
@@ -181,7 +181,7 @@ public class SignActivity extends AppCompatActivity{
                 case Date.SEND_NAME_SUCCESS:
                     Toast.makeText(getApplicationContext(), "注册成功", Toast.LENGTH_SHORT).show();
                     intent = new Intent();
-                    intent.setClass(inst, MainActivity.class);
+                    intent.setClass(inst, CreateRoomActivity.class);
                     startActivity(intent);
                     inst.finish();
                     break;
