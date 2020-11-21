@@ -12,6 +12,8 @@ public class Date extends Application {
 
     public String  name = null;
 
+    public String id = null;
+
     public static final int CONNECT_SUCCESS = 1; // 连接成功
 
     public static final int CONNECT_FAILED = 2; //连接失败
@@ -27,6 +29,10 @@ public class Date extends Application {
     public static final int SEND_NAME_SUCCESS = 7; //发送NAME成功
 
     public static final int SEND_NAME_FAILED = 8; // 发送NAME失败
+
+    public static final int RECEIVE_MESSAGE = 9; // 收到MESSAGE
+
+    public static final int RECEIVE_ID = 10; // 收到ID
 
     private mHandler mhandler = null;
 
@@ -48,6 +54,31 @@ public class Date extends Application {
         return mLinkHelper;
     }
 
+
+    void receive_thread() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+                    String ret = getLinkHelper().receive();
+                    Log.e("Date.receive_thread", ret);
+                    Message message = new Message();
+                    String[] ret_list = ret.split("##");
+                    if(ret_list.length == 2) {
+                        message.obj = ret_list[1];
+                        if(ret_list[0].equals("MESSAGE")) {
+                            message.what = Date.RECEIVE_MESSAGE;
+                        }else if(ret_list[0].equals("ID")) {
+                            message.what = Date.RECEIVE_ID;
+                        }
+                    }else {
+                        message.what = Date.RECEIVE_FAILED;
+                    }
+                    getMHandler().sendMessage(message);
+                }
+            }
+        }).start();
+    }
 
     public class mHandler extends Handler {
 
@@ -90,6 +121,9 @@ public class Date extends Application {
                     intent.setAction("android.intent.action.test");
                     intent.putExtra("VALUE", Date.SEND_NAME_SUCCESS);
                     sendBroadcast(intent);
+                    break;
+                case Date.RECEIVE_ID:
+                    id = msg.obj.toString();
                     break;
             }
         }

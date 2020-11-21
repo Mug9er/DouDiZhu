@@ -23,6 +23,7 @@ public class CreateRoomActivity extends AppCompatActivity {
 
     EditText room_id;
     Button join_room, create_room;
+    TextView textView_nameid;
     MyReceiver receiver = null;
     IntentFilter filter = null;
     LinkHelper mLinkHelper = null;
@@ -52,11 +53,13 @@ public class CreateRoomActivity extends AppCompatActivity {
         registerReceiver(receiver, filter);
         Log.e("CreateRoom.register", "注册");
 
+        textView_nameid = findViewById(R.id.create_room_name_id);
         room_id = findViewById(R.id.room_id);
         join_room = findViewById(R.id.join_room);
         create_room = findViewById(R.id.create_room);
 
         inst = this;
+        textView_nameid.setText(mDate.name + "  #" + mDate.id);
     }
 
     void setOnClicked() {

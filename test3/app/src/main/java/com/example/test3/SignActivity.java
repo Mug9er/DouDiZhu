@@ -96,7 +96,7 @@ public class SignActivity extends AppCompatActivity{
                     @Override
                     public void run() {
                         String name = user_name.getText().toString();
-                        String ret = linkHelper.sendName(name);
+                        String ret = linkHelper.sendMessage("NAME", name);
                         Message message = new Message();
                         String[] ret_list = ret.split("##");
 
@@ -132,27 +132,6 @@ public class SignActivity extends AppCompatActivity{
         }).start();
     }
 
-    void receive_thread() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(true) {
-                    String ret = linkHelper.receive();
-                    Log.e("receive", ret);
-                    Message message = new Message();
-                    String[] ret_list = ret.split("##");
-                    if(ret_list.length == 2 && ret_list[0].equals("MESSAGE")) {
-                        message.what = Date.RECEIVE_SUCCESS;
-                    }else {
-                        message.what = Date.RECEIVE_FAILED;
-                    }
-                    message.obj = ret;
-                    handler.sendMessage(message);
-                }
-            }
-        }).start();
-    }
-
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void exitAPP() {
         ActivityManager activityManager = (ActivityManager) context.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
@@ -172,7 +151,7 @@ public class SignActivity extends AppCompatActivity{
                 case Date.CONNECT_SUCCESS:
                     Log.e("SignActivity.MyReceiver.onReceive", "Connect_Success");
                     Toast.makeText(getApplicationContext(), "Connect_Success", Toast.LENGTH_SHORT).show();
-                    receive_thread();
+                    mDate.receive_thread();
                     break;
                 case Date.CONNECT_FAILED:
                     Log.e("SignActivity.MyReceiver.onReceive", "Connect_failed");

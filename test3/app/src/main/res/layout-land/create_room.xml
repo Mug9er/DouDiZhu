@@ -9,8 +9,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         >
+
+        <TextView
+            android:layout_width="170dp"
+            android:layout_height="50dp"
+            android:textSize="24dp"
+            android:id="@+id/create_room_name_id"
+            />
 
         <TextView
             android:id="@+id/room_text_view"
@@ -53,6 +59,6 @@
             android:layout_marginTop="50dp"
 
             />
-    </>
+    </RelativeLayout>>
 
 </RelativeLayout>

@@ -17,7 +17,7 @@
 #define SERV_IP "123.56.252.111"
 #define SERV_PORT 6666
 
-char buf1[1024], buf2[1024];
+char buf_read[1024], buf_write[1024];
 int clientfd;
 struct sockaddr_in serv_addr;
 

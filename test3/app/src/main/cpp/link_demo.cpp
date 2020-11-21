@@ -30,16 +30,16 @@ JNIEXPORT jstring JNICALL
 Java_com_example_test3_LinkHelper_sendTest(JNIEnv *env, jobject clazz, jstring content) {
     char * tmp = (char*) env->GetStringUTFChars(content, JNI_FALSE);
 
-    strcpy(buf1, tmp);
+    strcpy(buf_write, tmp);
 
     env->ReleaseStringUTFChars(content, tmp);
 
-    write(clientfd, buf1, 8);
+    write(clientfd, buf_write, 8);
 
-    bzero(buf1, 1024);
+    bzero(buf_write, 1024);
 
    // read(clientfd1, buf1, sizeof(buf1));
-    return env->NewStringUTF(buf1);
+    return env->NewStringUTF(buf_write);
 }
 extern "C"
 JNIEXPORT jstring JNICALL
@@ -53,36 +53,37 @@ Java_com_example_test3_LinkHelper_close(JNIEnv *env, jobject clazz) {
 }
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_example_test3_LinkHelper_sendName(JNIEnv *env, jobject clazz, jstring name) {
-    char * tmp = (char*) env->GetStringUTFChars(name, JNI_FALSE);
-
-    sprintf(buf1, "NAME##%s", tmp);
-
-    env->ReleaseStringUTFChars(name, tmp);
-
-    int ret = write(clientfd, buf1, sizeof(buf1));
-
-    if(ret < 0) {
-        return env->NewStringUTF("send error");
-    }
-    return env->NewStringUTF(buf1);
-}extern "C"
-JNIEXPORT jstring JNICALL
 Java_com_example_test3_LinkHelper_receive(JNIEnv *env, jobject clazz) {
-    bzero(buf1, 0);
-    int ret = read(clientfd, buf1, sizeof(buf1));
 
-    sprintf(buf2, "MESSAGE##%s", buf1);
-    sprintf(buf1, "%s", buf2);
+    bzero(buf_read, 0);
 
+    int ret = read(clientfd, buf_read, sizeof(buf_read));
+    LOGI("link_demo.receive: %s", buf_read);
     if(ret < 0) {
         return env->NewStringUTF("receive error");
     }
-    return env->NewStringUTF(buf1);
+    return env->NewStringUTF(buf_read);
 }
 extern "C"
 JNIEXPORT jstring JNICALL
 Java_com_example_test3_LinkHelper_joinRoom(JNIEnv *env, jobject thiz, jstring id) {
     // TODO: implement joinRoom()
 
+}extern "C"
+JNIEXPORT jstring JNICALL
+Java_com_example_test3_LinkHelper_sendMessage(JNIEnv *env, jobject thiz, jstring type, jstring msg) {
+    char * tmp1 = (char*) env->GetStringUTFChars(type, JNI_FALSE);
+    char * tmp2 = (char*) env->GetStringUTFChars(msg, JNI_FALSE);
+
+    sprintf(buf_write, "%s##%s", tmp1, tmp2);
+
+    env->ReleaseStringUTFChars(type, tmp1);
+    env->ReleaseStringUTFChars(msg, tmp2);
+
+    int ret = write(clientfd, buf_write, sizeof(buf_write));
+
+    if(ret < 0) {
+        return env->NewStringUTF("send error");
+    }
+    return env->NewStringUTF(buf_write);
 }
