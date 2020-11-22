@@ -53,7 +53,7 @@ public class SignActivity extends AppCompatActivity{
     void init() {
         receiver = new MyReceiver();
         filter = new IntentFilter();
-        filter.addAction("android.intent.action.test");
+        filter.addAction("android.intent.action.SignActivity");
         registerReceiver(receiver, filter);
         Log.e("register", "注册");
 

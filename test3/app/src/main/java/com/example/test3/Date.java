@@ -34,6 +34,10 @@ public class Date extends Application {
 
     public static final int RECEIVE_ID = 10; // 收到ID
 
+    public static final int JOIN_ROOM_FAILED = 11; //加入房间失败
+
+    public static final int JOIN_ROOM_SUCCESS = 12; // 加入房间成功
+
     private mHandler mhandler = null;
 
     private LinkHelper mLinkHelper = null;
@@ -70,6 +74,10 @@ public class Date extends Application {
                             message.what = Date.RECEIVE_MESSAGE;
                         }else if(ret_list[0].equals("ID")) {
                             message.what = Date.RECEIVE_ID;
+                        }else if(ret_list[0].equals("JoinFailed")) {
+                            message.what = Date.JOIN_ROOM_FAILED;
+                        }else if(ret_list[0].equals("JoinSuccess")) {
+                            message.what = Date.JOIN_ROOM_SUCCESS;
                         }
                     }else {
                         message.what = Date.RECEIVE_FAILED;
@@ -88,25 +96,25 @@ public class Date extends Application {
             Intent intent = null;
             switch (msg.what) {
                 case Date.CONNECT_SUCCESS:
-                    Log.e("SignActivity.mHander.connect_success", msg.obj.toString());
                     intent = new Intent();
-                    intent.setAction("android.intent.action.test");
+                    intent.setAction("android.intent.action.SignActivity");
                     intent.putExtra("VALUE", Date.CONNECT_SUCCESS);
                     sendBroadcast(intent);
                     break;
                 case Date.CONNECT_FAILED:
                     intent = new Intent();
-                    intent.setAction("android.intent.action.test");
+                    intent.setAction("android.intent.action.SignActivity");
                     intent.putExtra("VALUE", Date.CONNECT_FAILED);
                     sendBroadcast(intent);
                     break;
                 case Date.SEND_NAME_FAILED:
                     intent = new Intent();
-                    intent.setAction("android.intent.action.test");
+                    intent.setAction("android.intent.action.SignActivity");
                     intent.putExtra("VALUE", Date.SEND_NAME_FAILED);
                     sendBroadcast(intent);
                 case Date.RECEIVE_SUCCESS:
                     Log.e("SignActivity.mHander.receiver_success", msg.obj.toString());
+                    break;
 
                 case Date.RECEIVE_FAILED:
                     break;
@@ -115,15 +123,21 @@ public class Date extends Application {
                     Log.e("SignActivity.mHander.cancel_failed", msg.obj.toString());
                     break;
                 case Date.SEND_NAME_SUCCESS:
-                    Log.e("SignActivity.mHander.send_name_success", "ss");
-
                     intent = new Intent();
-                    intent.setAction("android.intent.action.test");
+                    intent.setAction("android.intent.action.SignActivity");
                     intent.putExtra("VALUE", Date.SEND_NAME_SUCCESS);
                     sendBroadcast(intent);
                     break;
                 case Date.RECEIVE_ID:
                     id = msg.obj.toString();
+                    break;
+                case Date.JOIN_ROOM_FAILED:
+                case Date.JOIN_ROOM_SUCCESS:
+                    intent = new Intent();
+                    intent.setAction("android.intent.action.CreateRoomActivity");
+                    intent.putExtra("TYPE", Date.JOIN_ROOM_FAILED);
+                    intent.putExtra("VALUE", msg.obj.toString());
+                    sendBroadcast(intent);
                     break;
             }
         }

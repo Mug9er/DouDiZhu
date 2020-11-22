@@ -26,6 +26,7 @@ public class ReadyRoomActivity extends AppCompatActivity {
     MyReceiver receiver = null;
     IntentFilter filter = null;
     LinkHelper mLinkHelper = null;
+    Intent intent = null;
     Date mDate = null;
     Date.mHandler mHandler = null;
     ReadyRoomActivity inst = null;
@@ -35,9 +36,10 @@ public class ReadyRoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.create_room);
+        setContentView(R.layout.ready_room);
         init();
         setOnClicked();
+        set();
 
     }
 
@@ -48,11 +50,11 @@ public class ReadyRoomActivity extends AppCompatActivity {
 
         receiver = new MyReceiver();
         filter = new IntentFilter();
-        filter.addAction("android.intent.action.CreateRoom");
+        filter.addAction("android.intent.action.ReadyRoom");
         registerReceiver(receiver, filter);
-        Log.e("CreateRoom.register", "注册");
+        Log.e("ReadyRoom.register", "注册");
 
-        room_id = findViewById(R.id.room_id);
+        room_id = findViewById(R.id.ready_room_id);
         master_play = findViewById(R.id.room_master_play);
         player_ready = findViewById(R.id.player_ready);
         room_master_id = findViewById(R.id.room_master_id);
@@ -60,7 +62,18 @@ public class ReadyRoomActivity extends AppCompatActivity {
         play2_id = findViewById(R.id.play2_id);
 
         inst = this;
+        intent = getIntent();
     }
+
+    void set() {
+        room_id.setText("房间号： " + mDate.id);
+        room_master_id.setText(mDate.name + " #" + mDate.id);
+        String msg = intent.getStringExtra("type");
+        Log.e("ReadyRoomActivity.set", msg);
+        if(msg.equals("master")) player_ready.setVisibility(View.INVISIBLE);
+        else master_play.setVisibility(View.INVISIBLE);
+    }
+
 
     void setOnClicked() {
         master_play.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +103,7 @@ public class ReadyRoomActivity extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e("MainActivity", "jieshou");
+            Log.e("ReadyRoomActivity", "jieshou");
         }
     }
 

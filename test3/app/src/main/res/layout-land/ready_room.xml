@@ -79,27 +79,32 @@
 
     <TextView
         android:id="@+id/ready_room_id"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
         android:layout_toRightOf="@id/room_master"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="200dp"
-        android:textSize="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="140dp"
+        android:textSize="20dp"
         />
 
     <Button
         android:id="@+id/room_master_play"
-        android:layout_width="160dp"
+        android:layout_width="230dp"
         android:layout_height="80dp"
         android:layout_below="@+id/play2"
-        android:layout_alignLeft="@id/ready_room_id"
+        android:text= "开始"
+        android:textSize="40dp"
+        android:layout_marginTop="20dp"
         />
+
     <Button
         android:id="@+id/player_ready"
-        android:layout_width="160dp"
+        android:layout_width="230dp"
         android:layout_height="80dp"
         android:layout_below="@+id/play2"
-        android:layout_alignLeft="@id/ready_room_id"
+        android:layout_marginTop="20dp"
+        android:text= "准备"
+        android:textSize="40dp"
         />
 
 

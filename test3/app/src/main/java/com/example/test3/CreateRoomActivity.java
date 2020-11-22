@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,6 +25,7 @@ public class CreateRoomActivity extends AppCompatActivity {
     EditText room_id;
     Button join_room, create_room;
     TextView textView_nameid;
+    Intent intent = null;
     MyReceiver receiver = null;
     IntentFilter filter = null;
     LinkHelper mLinkHelper = null;
@@ -49,7 +51,7 @@ public class CreateRoomActivity extends AppCompatActivity {
 
         receiver = new MyReceiver();
         filter = new IntentFilter();
-        filter.addAction("android.intent.action.CreateRoom");
+        filter.addAction("android.intent.action.CreateRoomActivity");
         registerReceiver(receiver, filter);
         Log.e("CreateRoom.register", "注册");
 
@@ -70,8 +72,9 @@ public class CreateRoomActivity extends AppCompatActivity {
                    @Override
                    public void run() {
                        String edit_room_id = room_id.getText().toString();
-                       String ret = mLinkHelper.joinRoom(edit_room_id);
-
+                       Log.e("CreateRoomActivity.join_room", edit_room_id);
+                       String ret = mLinkHelper.sendMessage("JoinRoom", edit_room_id);
+                        Log.e("CreateRoomActivity.join_room", ret);
                    }
                }).start();
 
@@ -81,7 +84,11 @@ public class CreateRoomActivity extends AppCompatActivity {
        create_room.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-
+               intent = new Intent();
+               intent.setClass(inst, ReadyRoomActivity.class);
+               intent.putExtra("type", "master");
+               startActivity(intent);
+               inst.finish();
            }
        });
     }
@@ -90,7 +97,18 @@ public class CreateRoomActivity extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e("MainActivity", "jieshou");
+            Log.e("CreateRoomActivity", "jieshou");
+            int type = intent.getIntExtra("TYPE", 0);
+            String value = intent.getStringExtra("VALUE");
+            switch(type){
+                case Date.JOIN_ROOM_FAILED:
+                    Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();
+                    break;
+                case Date.JOIN_ROOM_SUCCESS:
+                    Toast.makeText(getApplicationContext(), "加入成功", Toast.LENGTH_SHORT).show();
+                    Log.e("CreateActivity.MyReceiver", value);
+                    break;
+            }
         }
     }
 

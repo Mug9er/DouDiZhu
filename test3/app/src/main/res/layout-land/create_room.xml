@@ -54,7 +54,7 @@
             android:layout_width="250dp"
             android:layout_height="50dp"
             android:layout_below="@+id/join_room"
-            android:text="加入房间"
+            android:text="创建房间"
             android:layout_alignLeft="@+id/join_room"
             android:layout_marginTop="50dp"
 
