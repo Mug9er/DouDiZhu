@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class CreateRoomActivity extends AppCompatActivity {
@@ -74,7 +75,7 @@ public class CreateRoomActivity extends AppCompatActivity {
                        String edit_room_id = room_id.getText().toString();
                        Log.e("CreateRoomActivity.join_room", edit_room_id);
                        String ret = mLinkHelper.sendMessage("JoinRoom", edit_room_id);
-                        Log.e("CreateRoomActivity.join_room", ret);
+                       Log.e("CreateRoomActivity.join_room", ret);
                    }
                }).start();
 
@@ -86,7 +87,16 @@ public class CreateRoomActivity extends AppCompatActivity {
            public void onClick(View v) {
                intent = new Intent();
                intent.setClass(inst, ReadyRoomActivity.class);
-               intent.putExtra("type", "master");
+               intent.putExtra("PLAYER_TYPE", "master");
+               Bundle bundle = new Bundle();
+               bundle.putString("ROOM_ID", mDate.id);
+               bundle.putString("MASTER_NAME", mDate.name);
+               bundle.putString("MASTER_ID", mDate.id);
+               bundle.putString("PLAYER1_NAME", "等待加入");
+               bundle.putString("PLAYER1_ID", "0");
+               bundle.putString("PLAYER2_NAME", "等待加入");
+               bundle.putString("PLAYER2_ID", "0");
+               intent.putExtras(bundle);
                startActivity(intent);
                inst.finish();
            }
@@ -97,7 +107,6 @@ public class CreateRoomActivity extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e("CreateRoomActivity", "jieshou");
             int type = intent.getIntExtra("TYPE", 0);
             String value = intent.getStringExtra("VALUE");
             switch(type){
@@ -105,8 +114,11 @@ public class CreateRoomActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();
                     break;
                 case Date.JOIN_ROOM_SUCCESS:
-                    Toast.makeText(getApplicationContext(), "加入成功", Toast.LENGTH_SHORT).show();
-                    Log.e("CreateActivity.MyReceiver", value);
+                    Toast.makeText(getApplicationContext(), value, Toast.LENGTH_SHORT).show();
+                    intent.setClass(inst, ReadyRoomActivity.class);
+                    intent.putExtra("PLAYER_TYPE", "player");
+                    startActivity(intent);
+                    inst.finish();
                     break;
             }
         }

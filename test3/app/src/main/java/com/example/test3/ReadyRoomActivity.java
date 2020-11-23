@@ -1,5 +1,6 @@
 package com.example.test3;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -50,7 +52,7 @@ public class ReadyRoomActivity extends AppCompatActivity {
 
         receiver = new MyReceiver();
         filter = new IntentFilter();
-        filter.addAction("android.intent.action.ReadyRoom");
+        filter.addAction("android.intent.action.ReadyRoomActivity");
         registerReceiver(receiver, filter);
         Log.e("ReadyRoom.register", "注册");
 
@@ -65,15 +67,25 @@ public class ReadyRoomActivity extends AppCompatActivity {
         intent = getIntent();
     }
 
+    @SuppressLint("SetTextI18n")
     void set() {
         room_id.setText("房间号： " + mDate.id);
         room_master_id.setText(mDate.name + " #" + mDate.id);
-        String msg = intent.getStringExtra("type");
+        String msg = intent.getStringExtra("PLAYER_TYPE");
         Log.e("ReadyRoomActivity.set", msg);
         if(msg.equals("master")) player_ready.setVisibility(View.INVISIBLE);
         else master_play.setVisibility(View.INVISIBLE);
+        Bundle bundle = intent.getExtras();
+        room_id.setText("房间号： " + bundle.getString("ROOM_ID"));
+        room_master_id.setText(bundle.getString("MASTER_NAME") + "  #" + bundle.getString("MASTER_ID"));
+        Log.e("ReadyRoomActivity.set", bundle.getString("PLAYER1_NAME") == null ? "NULL" : bundle.getString("PLAYER1_NAME"));
+        if(bundle.getString("PLAYER1_NAME") != null) {
+            play1_id.setText(bundle.getString("PLAYER1_NAME") + "  #" + bundle.getString("PLAYER1_ID"));
+        }
+        if(bundle.getString("PLAYER2_NAME") != null) {
+            play2_id.setText(bundle.getString("PLAYER2_NAME") + "  #" + bundle.getString("PLAYER2_ID"));
+        }
     }
-
 
     void setOnClicked() {
         master_play.setOnClickListener(new View.OnClickListener() {
@@ -82,8 +94,6 @@ public class ReadyRoomActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        String edit_room_id = room_id.getText().toString();
-                        String ret = mLinkHelper.joinRoom(edit_room_id);
 
                     }
                 }).start();
@@ -103,7 +113,24 @@ public class ReadyRoomActivity extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e("ReadyRoomActivity", "jieshou");
+            int type = intent.getIntExtra("TYPE", 0);
+            String value = intent.getStringExtra("VALUE");
+            switch(type){
+                case Date.PLAYER_JOIN:
+                    Log.e("ReadyRoomActivity.onReceive", "update");
+                    Bundle bundle = intent.getExtras();
+                    room_id.setText("房间号： " + bundle.getString("ROOM_ID"));
+                    room_master_id.setText(bundle.getString("MASTER_NAME") + "  #" + bundle.getString("MASTER_ID"));
+                    Log.e("ReadyRoomActivity.set", bundle.getString("PLAYER1_NAME") == null ? "NULL" : bundle.getString("PLAYER1_NAME"));
+                    if(bundle.getString("PLAYER1_NAME") != null) {
+                        play1_id.setText(bundle.getString("PLAYER1_NAME") + "  #" + bundle.getString("PLAYER1_ID"));
+                    }else play1_id.setText("");
+                    if(bundle.getString("PLAYER2_NAME") != null) {
+                        play2_id.setText(bundle.getString("PLAYER2_NAME") + "  #" + bundle.getString("PLAYER2_ID"));
+                    }else play2_id.setText("");
+
+                    break;
+            }
         }
     }
 

@@ -24,7 +24,7 @@
             android:layout_height="100dp"
             android:gravity="center"
             android:layout_gravity="center"
-            android:textSize="50dp"
+            android:textSize="30dp"
 
             />
     </LinearLayout>
@@ -47,7 +47,7 @@
             android:id="@+id/play1_id"
             android:layout_width="200dp"
             android:layout_height="100dp"
-            android:textSize="50dp"
+            android:textSize="30dp"
             android:gravity="center"
 
             />
@@ -71,7 +71,7 @@
             android:id="@+id/play2_id"
             android:layout_width="200dp"
             android:layout_height="100dp"
-            android:textSize="50dp"
+            android:textSize="30dp"
             android:gravity="center"
 
             />
